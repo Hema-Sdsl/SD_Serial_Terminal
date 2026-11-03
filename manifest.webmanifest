@@ -1,0 +1,16 @@
+{
+  "name": "Straight Drive Terminal",
+  "short_name": "SD Terminal",
+  "description": "Serial (UART / RS485 / USB) and BLE device terminal by Straight Drive.",
+  "id": "./",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#021017",
+  "theme_color": "#0A1A2E",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

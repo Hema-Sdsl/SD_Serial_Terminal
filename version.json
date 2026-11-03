@@ -1,0 +1,10 @@
+{
+  "version": "1.1.0",
+  "date": "2026-11-03",
+  "notes": [
+    "Version number shown in the tool",
+    "Install as a desktop app (Straight Drive icon, own window)",
+    "Works offline after the first open",
+    "Update notification with one-click update"
+  ]
+}

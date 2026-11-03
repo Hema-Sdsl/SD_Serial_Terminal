@@ -5,6 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Straight Drive Terminal</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 250'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop stop-color='%2300B4DE'/%3E%3Cstop offset='1' stop-color='%2300E676'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath fill='url(%23g)' d='M206.43 250L110.846 249.592C102.723 249.592 94.9783 246.145 89.4537 240.094L2.32084 140.446C-2.32087 135.391 0.353156 127.247 7.16435 127.247H38.1427C47.1738 127.247 55.8266 131.076 61.9819 137.817L114.882 197.508C117.758 200.648 121.769 202.436 125.982 202.436L192.429 203.125C196.642 203.125 200.653 201.338 203.529 198.198L261.399 134.957C269.093 126.532 269.093 113.537 261.399 105.137L214.225 54.3045C210.062 49.76 204.84 47.0793 198.736 47.0793L104.993 46.7729C98.9641 46.7729 97.7028 52.5429 101.815 57.0108C101.815 57.0108 182.565 142.565 209.961 170.292C212.333 173.637 211.324 178.258 206.909 178.258C194.901 178.258 159.836 178.309 159.836 178.309C155.598 178.309 151.511 176.624 148.484 173.586L41.851 61.5809C35.4939 54.662 35.8471 39.7008 42.2042 32.7563L59.2069 9.47202C64.7316 3.44669 72.5014 0 80.6244 0L215.713 0.204248C223.836 0.204248 230.218 3.44669 235.743 9.49755L306.378 83.461C325.323 104.167 323.431 136.055 304.486 156.761L227.847 240.528C222.297 246.553 214.553 250 206.43 250Z'/%3E%3C/svg%3E">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<meta name="theme-color" content="#0A1A2E">
+<meta name="application-name" content="SD Terminal">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Saira:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
@@ -446,8 +450,26 @@ footer .rec::before { content: "● "; animation: pulse 1s infinite; }
 .choice .tags { margin-top: 12px; display: flex; gap: 6px; flex-wrap: wrap; }
 .choice .tags span { font-size: 10.5px; font-weight: 700; padding: 2px 7px; border-radius: 4px; background: rgba(255,255,255,.07); color: #9AAFC4; }
 .choice .warn { color: #FF6B6B; font-size: 11.5px; margin-top: 10px; }
+.chooser-update { margin-top: 18px; display: flex; align-items: center; justify-content: center; gap: 12px; padding: 10px 14px; border-radius: 10px; background: linear-gradient(90deg, rgba(0,230,118,.14), rgba(0,174,239,.14)); border: 1px solid rgba(34,211,238,.35); font-size: 13px; }
 #chooser .foot { margin-top: 20px; color: #60778F; font-size: 12px; }
 
+/* Update notification bar. */
+#updateBar {
+  flex: none; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; padding: 8px 14px;
+  background: linear-gradient(90deg, rgba(0,230,118,.16), rgba(0,174,239,.16)); border-bottom: 1px solid rgba(34,211,238,.35);
+  font-size: 12.5px;
+}
+#updateBar .ub-title { font-weight: 700; }
+#updateBar .ub-notes { color: var(--muted); flex: 1; min-width: 160px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#updateBar .ub-icon { width: 26px; height: 26px; border-radius: 50%; background: var(--brand-grad); color: #021017; display: flex; align-items: center; justify-content: center; flex: none; }
+#updateBar .ub-icon .i { width: 15px; height: 15px; }
+footer .ver { color: var(--muted); cursor: pointer; text-decoration: none; padding: 1px 7px; border: 1px solid var(--border2); border-radius: 999px; font-size: 11px; }
+footer .ver:hover { color: var(--accent); border-color: var(--accent); }
+footer .ver.new { color: #021017; background: var(--brand-grad); border-color: transparent; font-weight: 700; }
+.wn-ver { margin: 14px 0 4px; display: flex; align-items: baseline; gap: 8px; }
+.wn-ver b { font-size: 14px; }
+.wn-ver span { color: var(--dim); font-size: 11.5px; }
+.wn-ver .cur { color: #021017; background: var(--brand-grad); font-size: 10px; font-weight: 700; padding: 1px 6px; border-radius: 4px; }
 #toasts { position: fixed; right: 18px; bottom: 40px; display: flex; flex-direction: column; gap: 8px; z-index: 60; }
 .toast {
   background: var(--panel); color: var(--text); border: 1px solid var(--border2); border-left: 3px solid var(--brand-green);
@@ -487,6 +509,7 @@ footer .rec::before { content: "● "; animation: pulse 1s infinite; }
     <div class="spacer"></div>
     <button class="btn ghost icon" id="toggleLeftBtn" title="Show / hide connection panel"><i data-icon="panelLeft"></i></button>
     <button class="btn ghost icon" id="toggleRightBtn" title="Show / hide commands panel"><i data-icon="panelRight"></i></button>
+    <button class="btn" id="installBtn" hidden title="Install as a desktop app"><i data-icon="install"></i><span class="hide-narrow">Install app</span></button>
     <button class="btn ghost icon" id="fullscreenBtn" title="Full screen (F11)"><i data-icon="maximize"></i></button>
     <button class="btn" id="switchModeBtn"><i data-icon="swap"></i><span class="hide-narrow">Switch Interface</span></button>
     <div class="menu-wrap">
@@ -500,11 +523,22 @@ footer .rec::before { content: "● "; animation: pulse 1s infinite; }
         <button data-act="importCfg"><i data-icon="upload"></i>Import settings &amp; commands</button>
         <button data-act="resetLayout"><i data-icon="refresh"></i>Reset panel layout</button>
         <hr>
+        <button data-act="install" id="menuInstall" hidden><i data-icon="install"></i>Install as desktop app</button>
+        <button data-act="whatsNew"><i data-icon="gift"></i>What's new</button>
+        <button data-act="checkUpdate"><i data-icon="refresh"></i>Check for updates</button>
         <button data-act="help"><i data-icon="help"></i>Help &amp; shortcuts <span class="spacer"></span><kbd>F1</kbd></button>
       </div>
     </div>
   </header>
 
+  <div id="updateBar" hidden>
+    <span class="ub-icon"><i data-icon="gift"></i></span>
+    <span class="ub-title" id="updateTitle"></span>
+    <span class="ub-notes" id="updateNotes"></span>
+    <button class="btn sm ghost" id="updateNotesBtn">What's new</button>
+    <button class="btn sm primary" id="updateNowBtn"><i data-icon="download"></i>Update now</button>
+    <button class="btn sm ghost" id="updateLaterBtn">Later</button>
+  </div>
   <div id="workspace">
     <!-- ===============================================================
          LEFT: CONNECTION PANEL
@@ -867,6 +901,7 @@ footer .rec::before { content: "● "; animation: pulse 1s infinite; }
     <a id="resetStatsBtn">reset</a>
     <span class="rec" id="recStatus" hidden>REC</span>
     <span class="spacer"></span>
+    <a class="ver" id="versionLink" title="What's new"></a>
     <span class="hide-narrow">Lines <b id="statLines">0</b></span>
     <span class="hide-narrow"><kbd>Enter</kbd> send · <kbd>Alt+1…9</kbd> command · <kbd>Ctrl+L</kbd> clear · <kbd>F1</kbd> help</span>
   </footer>
@@ -896,7 +931,11 @@ footer .rec::before { content: "● "; animation: pulse 1s infinite; }
         <div class="warn" id="bleWarn" hidden>Web Bluetooth is not available here. Use Chrome or Edge with Bluetooth on.</div>
       </div>
     </div>
-    <div class="foot">Switch any time with <b>Switch Interface</b> in the top bar.</div>
+    <div class="chooser-update" id="chooserUpdate" hidden>
+      <span>🔔 <b id="chooserUpdateText"></b></span>
+      <button class="btn sm primary" id="chooserUpdateBtn"><i data-icon="download"></i>Update now</button>
+    </div>
+    <div class="foot">Switch any time with <b>Switch Interface</b> in the top bar. · <span id="chooserVersion"></span></div>
   </div>
 </div>
 
@@ -981,6 +1020,21 @@ footer .rec::before { content: "● "; animation: pulse 1s infinite; }
         <button class="btn primary" id="logoUploadBtn"><i data-icon="upload"></i>Upload image</button>
         <button class="btn" id="logoResetBtn">Use Straight Drive logo</button>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- =====================================================================
+     WHAT'S NEW
+     ===================================================================== -->
+<div class="overlay" id="whatsNewModal" hidden>
+  <div class="modal">
+    <div class="modal-head"><h2>What's new</h2>
+      <button class="btn ghost icon" data-close="whatsNewModal"><i data-icon="x"></i></button></div>
+    <div class="modal-body" id="whatsNewBody"></div>
+    <div class="modal-foot">
+      <button class="btn" id="wnCheckBtn"><i data-icon="refresh"></i>Check for updates</button>
+      <button class="btn primary" data-close="whatsNewModal">Close</button>
     </div>
   </div>
 </div>
@@ -1172,6 +1226,8 @@ const ICONS = {
   record: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4" fill="currentColor"/>',
   file: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/>',
   chevron: '<path d="m6 9 6 6 6-6"/>',
+  install: '<rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/><path d="m9 9 3 3 3-3M12 6v6"/>',
+  gift: '<rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/><path d="M7.5 8a2.5 2.5 0 0 1 0-5C11 3 12 8 12 8s1-5 4.5-5a2.5 2.5 0 0 1 0 5"/>',
   maximize: '<path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/>',
   minimize: '<path d="M8 3v3a2 2 0 0 1-2 2H3"/><path d="M21 8h-3a2 2 0 0 1-2-2V3"/><path d="M3 16h3a2 2 0 0 1 2 2v3"/><path d="M16 21v-3a2 2 0 0 1 2-2h3"/>'
 };
@@ -3716,7 +3772,7 @@ function setupSplitters() {
    ===================================================================== */
 function openModal(id) { $(id).hidden = false; }
 function closeModal(id) { $(id).hidden = true; }
-const CLOSABLE_MODALS = ['cmdModal', 'ruleModal', 'logoModal', 'helpModal'];
+const CLOSABLE_MODALS = ['cmdModal', 'ruleModal', 'logoModal', 'helpModal', 'whatsNewModal'];
 
 function closeMenus() { document.querySelectorAll('.menu').forEach((m) => { m.hidden = true; }); }
 function toggleMenu(id) {
@@ -4125,6 +4181,278 @@ function init() {
 }
 
 init();
+
+/* =====================================================================
+   APP VERSION, UPDATES, INSTALL
+   ===================================================================== */
+
+/* The version of THIS file. Must match "version" in version.json when released. */
+const APP_VERSION = '1.1.0';
+
+/* Public site, used to check for updates when the tool is opened as a local file. */
+const UPDATE_SITE = 'https://hema-sdsl.github.io/SD_Serial_Terminal/';
+
+/* Shown in "What's new". Newest first. */
+const CHANGELOG = [
+  {
+    version: '1.1.0', date: '2026-11-03',
+    notes: [
+      'Version number shown in the status bar and on the start screen',
+      'Install as a desktop app: Straight Drive icon, opens in its own window',
+      'Works offline after the first open',
+      'Update notification: one click on "Update now" gets the latest version — no reinstall',
+      'What\'s new list and "Check for updates" in the ⋮ menu'
+    ]
+  },
+  {
+    version: '1.0.0', date: '2026-10-30',
+    notes: [
+      'Straight Drive brand theme, light / dark themes, full-screen mode',
+      'Serial (UART / RS485 / USB) and BLE terminals, kept separate',
+      'Resizable panels, search, pause, plotter, recording, export',
+      'Commands with groups, auto-reply rules, Modbus RTU builder and converters',
+      'Auto-reconnect after a board reset; DTR / RTS left ON so USB-CDC boards send logs'
+    ]
+  }
+];
+
+const UPDATE_CHECK_EVERY_MS = 60 * 60 * 1000;   /* While the app stays open. */
+
+const appUpdate = {
+  latest: null,            /* Last version.json seen that is newer than this file. */
+  registration: null,      /* Service worker registration (only on https / localhost). */
+  installPrompt: null,     /* Saved "install app" event from the browser. */
+  lastCheck: 0,
+  updating: false,
+  holdBar: false           /* True while the 'still publishing' message is shown. */
+};
+
+const isLocalFile = () => location.protocol === 'file:';
+const isInstalledApp = () => window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+
+/* -1 / 0 / 1 for "1.2.0" style versions. */
+function compareVersions(a, b) {
+  const pa = String(a).split('.').map((n) => parseInt(n, 10) || 0);
+  const pb = String(b).split('.').map((n) => parseInt(n, 10) || 0);
+  for (let i = 0; i < Math.max(pa.length, pb.length); i++) {
+    const d = (pa[i] || 0) - (pb[i] || 0);
+    if (d) return d > 0 ? 1 : -1;
+  }
+  return 0;
+}
+
+/* ---------------------------------------------------------------------
+   Service worker (offline copy + controlled updates)
+   --------------------------------------------------------------------- */
+async function registerServiceWorker() {
+  if (isLocalFile() || !('serviceWorker' in navigator)) return;
+  try {
+    appUpdate.registration = await navigator.serviceWorker.register('sw.js');
+  } catch (e) {
+    /* No sw.js next to the page (or blocked): the tool still works online. */
+    console.warn('Service worker not registered:', e.message);
+  }
+}
+
+/* ---------------------------------------------------------------------
+   Update check
+   --------------------------------------------------------------------- */
+async function checkForUpdate(manual) {
+  appUpdate.lastCheck = Date.now();
+  const base = isLocalFile() ? UPDATE_SITE : '';
+  try {
+    const response = await fetch(base + 'version.json?t=' + Date.now(), { cache: 'no-store' });
+    if (!response.ok) throw new Error('HTTP ' + response.status);
+    const info = await response.json();
+    if (!info || typeof info.version !== 'string') throw new Error('Bad version file');
+    if (compareVersions(info.version, APP_VERSION) > 0) {
+      appUpdate.latest = info;
+      $('versionLink').classList.add('new');
+      $('versionLink').title = 'v' + info.version + ' is available — click for details';
+      let dismissed = '';
+      try { dismissed = sessionStorage.getItem('sdterm.updateLater') || ''; } catch (e) { /* Ignore. */ }
+      if (manual || (dismissed !== info.version && !appUpdate.holdBar)) showUpdateBar(info);
+    } else if (manual) {
+      toast('You have the latest version (v' + APP_VERSION + ')');
+    }
+  } catch (e) {
+    if (manual) toast('Could not check for updates — are you online?', 'warn');
+  }
+}
+
+function showUpdateBar(info, message) {
+  $('updateTitle').textContent = message || ('New version available: v' + info.version);
+  $('updateNotes').textContent = message ? '' : (info.notes || []).slice(0, 3).join(' · ');
+  $('updateNowBtn').hidden = !!message;
+  $('updateBar').hidden = false;
+  /* The start screen covers the bar, so show the notice there too. */
+  $('chooserUpdateText').textContent = message || ('New version v' + info.version + ' is available');
+  $('chooserUpdateBtn').hidden = !!message;
+  $('chooserUpdate').hidden = false;
+}
+
+function hideUpdateBar(remember) {
+  appUpdate.holdBar = false;
+  $('updateBar').hidden = true;
+  $('chooserUpdate').hidden = true;
+  if (remember && appUpdate.latest) {
+    try { sessionStorage.setItem('sdterm.updateLater', appUpdate.latest.version); } catch (e) { /* Ignore. */ }
+  }
+}
+
+/* Ask the service worker to download the new files, then reload into them. */
+async function applyUpdate() {
+  const info = appUpdate.latest;
+  if (!info || appUpdate.updating) return;
+  if (isLocalFile()) {
+    window.open(UPDATE_SITE, '_blank', 'noopener');
+    toast('Opened the latest version in a new tab. Install it from there to get automatic updates.');
+    return;
+  }
+  if (state.connected && !confirm('Updating reloads the tool and closes the current connection.\nUpdate now?')) return;
+
+  appUpdate.updating = true;
+  setButton($('updateNowBtn'), 'refresh', 'Updating…', 'btn sm primary');
+  setButton($('chooserUpdateBtn'), 'refresh', 'Updating…', 'btn sm primary');
+  $('updateNowBtn').disabled = true;
+  $('chooserUpdateBtn').disabled = true;
+  try {
+    const controller = navigator.serviceWorker && navigator.serviceWorker.controller;
+    if (controller) {
+      const result = await new Promise((resolve) => {
+        const channel = new MessageChannel();
+        const timer = setTimeout(() => resolve({ ok: false, error: 'timed out' }), 20000);
+        channel.port1.onmessage = (event) => { clearTimeout(timer); resolve(event.data || { ok: false }); };
+        controller.postMessage({ type: 'UPDATE_APP' }, [channel.port2]);
+      });
+      if (!result.ok) throw new Error(result.error || 'download failed');
+    }
+    try { sessionStorage.setItem('sdterm.updateTarget', info.version); } catch (e) { /* Ignore. */ }
+    if (state.connected) await currentTransport().disconnect();
+    location.reload();
+  } catch (e) {
+    appUpdate.updating = false;
+    $('updateNowBtn').disabled = false;
+    setButton($('updateNowBtn'), 'download', 'Update now', 'btn sm primary');
+    $('chooserUpdateBtn').disabled = false;
+    setButton($('chooserUpdateBtn'), 'download', 'Update now', 'btn sm primary');
+    toast('Update failed: ' + e.message + '. Check your internet and try again.', 'error');
+  }
+}
+
+/* After an update reload: confirm it worked (or explain that GitHub is still publishing). */
+function afterUpdateReload() {
+  let target = '';
+  try {
+    target = sessionStorage.getItem('sdterm.updateTarget') || '';
+    sessionStorage.removeItem('sdterm.updateTarget');
+  } catch (e) { return; }
+  if (!target) return;
+  if (compareVersions(APP_VERSION, target) >= 0) {
+    toast('Updated to v' + APP_VERSION + ' 🎉');
+    store.set('seenVersion', APP_VERSION);
+  } else {
+    appUpdate.holdBar = true;
+    showUpdateBar(null, 'v' + target + ' is still being published on GitHub — please try again in a few minutes.');
+  }
+}
+
+/* ---------------------------------------------------------------------
+   What's new
+   --------------------------------------------------------------------- */
+function openWhatsNew() {
+  const body = $('whatsNewBody');
+  body.textContent = '';
+  const add = (entry, isLatestRemote) => {
+    const head = document.createElement('div');
+    head.className = 'wn-ver';
+    const b = document.createElement('b'); b.textContent = 'v' + entry.version;
+    const d = document.createElement('span'); d.textContent = entry.date || '';
+    head.append(b, d);
+    if (entry.version === APP_VERSION) {
+      const cur = document.createElement('span'); cur.className = 'cur'; cur.textContent = 'YOU HAVE THIS';
+      head.appendChild(cur);
+    } else if (isLatestRemote) {
+      const btn = document.createElement('button');
+      btn.className = 'btn sm primary'; btn.textContent = 'Update now';
+      btn.addEventListener('click', () => { closeModal('whatsNewModal'); applyUpdate(); });
+      head.appendChild(btn);
+    }
+    const list = document.createElement('ul');
+    (entry.notes || []).forEach((note) => { const li = document.createElement('li'); li.textContent = note; list.appendChild(li); });
+    body.append(head, list);
+  };
+  if (appUpdate.latest && !CHANGELOG.some((c) => c.version === appUpdate.latest.version)) add(appUpdate.latest, true);
+  CHANGELOG.forEach((entry) => add(entry, false));
+  openModal('whatsNewModal');
+}
+
+/* ---------------------------------------------------------------------
+   Install as desktop app
+   --------------------------------------------------------------------- */
+function updateInstallUi() {
+  const canInstall = !!appUpdate.installPrompt && !isInstalledApp();
+  $('installBtn').hidden = !canInstall;
+  $('menuInstall').hidden = !canInstall;
+}
+
+async function installApp() {
+  const prompt = appUpdate.installPrompt;
+  if (!prompt) {
+    toast(isInstalledApp() ? 'Already running as an installed app' : 'Use the browser menu → "Install page as app" (Chrome) or "Apps → Install this site" (Edge)', 'warn');
+    return;
+  }
+  appUpdate.installPrompt = null;
+  updateInstallUi();
+  prompt.prompt();
+  try {
+    const choice = await prompt.userChoice;
+    if (choice && choice.outcome === 'accepted') toast('Installed — look for "SD Terminal" on your desktop / Start menu');
+  } catch (e) { /* User closed the dialog. */ }
+}
+
+/* ---------------------------------------------------------------------
+   Wiring
+   --------------------------------------------------------------------- */
+function initApp() {
+  renderIcons(document);
+  $('versionLink').textContent = 'v' + APP_VERSION;
+  $('chooserVersion').textContent = 'v' + APP_VERSION;
+  $('versionLink').addEventListener('click', openWhatsNew);
+
+  $('updateNowBtn').addEventListener('click', applyUpdate);
+  $('chooserUpdateBtn').addEventListener('click', applyUpdate);
+  $('updateLaterBtn').addEventListener('click', () => hideUpdateBar(true));
+  $('updateNotesBtn').addEventListener('click', openWhatsNew);
+  $('wnCheckBtn').addEventListener('click', () => checkForUpdate(true));
+  $('installBtn').addEventListener('click', installApp);
+  $('menu').addEventListener('click', (e) => {
+    const btn = e.target.closest('button[data-act]');
+    if (!btn) return;
+    if (btn.dataset.act === 'whatsNew') openWhatsNew();
+    else if (btn.dataset.act === 'checkUpdate') checkForUpdate(true);
+    else if (btn.dataset.act === 'install') installApp();
+  });
+
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();                       /* Show our own Install button instead of the mini bar. */
+    appUpdate.installPrompt = e;
+    updateInstallUi();
+  });
+  window.addEventListener('appinstalled', () => { appUpdate.installPrompt = null; updateInstallUi(); });
+
+  /* Re-check when the app comes back to the front after a while, and every hour. */
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible' && Date.now() - appUpdate.lastCheck > 30 * 60 * 1000) checkForUpdate(false);
+  });
+  setInterval(() => checkForUpdate(false), UPDATE_CHECK_EVERY_MS);
+
+  afterUpdateReload();
+  registerServiceWorker();
+  checkForUpdate(false);
+}
+
+initApp();
 </script>
 </body>
 </html>
